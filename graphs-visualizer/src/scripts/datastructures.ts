@@ -66,7 +66,9 @@ export class Queue {
 
 class HeapItem{
     public value:number;
+    public items:any[];
     constructor(value){
+        this.items = [];
         this.value = value;
     }
 }
@@ -83,12 +85,10 @@ class BinaryHeap{
     private getParent(index:number):number{
         return Math.floor(index/2);
     }
+
     private mount(index:number):void{
         let parentIndex:number = this.getParent(index);
-        if(this.tree[index].value < this.tree[parentIndex].value || index == this._rootIndex){
-            if(index == this._rootIndex){
-                this._rootIndex = index;
-            }
+        if(this.tree[index].value <= this.tree[parentIndex].value || index == this._rootIndex){
             return;
         }else{
             const middle:number = this.tree[index].value;//REVISAR PER LA COPIA DE VARIABLES
@@ -96,18 +96,22 @@ class BinaryHeap{
             this.tree[parentIndex].value = middle;
             this.mount(parentIndex);
         }
+        return;
     }
-    private unmount(index):void{
+
+    private unmount(index:number):void{
         if(this.tree[index].value > Math.max(this.tree[index*2].value,this.tree[index*2+1].value)){
             return;
         }else{
             if(this.tree[index*2].value > this.tree[index*2 + 1].value){
+
                 const middle:number = this.tree[index*2].value;
                 this.tree[index*2].value = this.tree[index].value;
                 this.tree[index].value = middle;
 
                 this.unmount(index*2);
             }else{
+
                 const middle:number = this.tree[index*2 + 1].value;
                 this.tree[index*2 + 1].value = this.tree[index].value;
                 this.tree[index].value = middle;
@@ -115,22 +119,26 @@ class BinaryHeap{
                 this.unmount(index*2 + 1);
             }
         }
+        return;
     }
+
     insert(value:number):void{
         this.tree[this._lastIndex] = new HeapItem(value);
         this.mount(this._lastIndex);
         this._lastIndex++;
     }
-    remove(index):void{
+
+    remove(index:number):void{
         this.tree[index].value = this.tree[this._lastIndex].value;
         this.tree[this._lastIndex] = null;
-        this.unmount(index);
-        //CHECK THE ROOT, IT NEEDS TO BE UPDATED
         this._lastIndex--;
+        this.unmount(index);
     }
+
     root():number{
         return this.tree[this._rootIndex].value;
     }
+
     lastIndex():number{
         return this._lastIndex;
     }
@@ -144,10 +152,11 @@ export class PriorityQueue{
         this.Heap = new BinaryHeap();
         this._size = 0;
     }
-    push(value):void{
+    push(value:number):void{
         this.Heap.insert(value);
         this._size++;
     }
+    
     pop():void{
         if(this._size == 0){
             return;
@@ -155,12 +164,14 @@ export class PriorityQueue{
         this.Heap.remove(this.Heap.root());
         this._size--;
     }
+
     front():number{
         if(this._size == 0){
             return null;
         }
         return this.Heap.root();
     }
+
     empty():boolean{
         if(this._size == 0){
             return true;
@@ -168,6 +179,7 @@ export class PriorityQueue{
             return false;
         }
     }
+
     size():number{
         return this._size;
     }
