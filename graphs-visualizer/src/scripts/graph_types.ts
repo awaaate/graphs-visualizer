@@ -1,5 +1,5 @@
 import {PriorityQueue, Queue} from "./datastructures"
-export const INT_MAX:number = 8007199254740991//normal intmax 
+export const INF:number = 8007199254740991//normal intmax 
 export interface Edge {
     weight: number;
     to: number;
@@ -10,7 +10,7 @@ interface Coords {
     y: number;
 }
 
-class Node {
+export class Node {
     element?: HTMLElement;
     constructor(
         public id: number,
@@ -23,13 +23,13 @@ class Node {
     }
 }
 
-
 export class Graph{
     size:number;
     clean:boolean;
-    nodeList:Node[];
     visited:boolean[];
     distance:number[];
+
+    id_node:Node[]; //means gives and id, returns node;
     constructor(){
         this.size = 0;
         this.clean = false;
@@ -38,8 +38,9 @@ export class Graph{
         this.size = n;
     }
     reset(){
-        this.visited = Array.from({length:this.size});
+        this.visited = Array.from({length: this.size});
         this.distance = Array.from({length: this.size});
+        this.distance.map((item,index)=> {return INF});
         this.clean = true;
     }
 
@@ -47,13 +48,24 @@ export class Graph{
         if(!this.clean){
             this.reset();
         }
+        const par:number[] = Array.from({length: this.size});
         const q = new Queue();
         q.push(sourceId);
-        this.distance[sourceId] = INT_MAX;
+        this.distance[sourceId] = 1;
         while(!q.empty()){
-            let curr = q.pop
+            let curr = q.front();
+            q.pop();
+            for(const edge of this.id_node[curr].adjList){
+                if(this.distance[edge.to] != INF){
+                    this.distance[edge.to] = this.distance[curr] + 1;
+                    par[edge.to] = curr;
+                    q.push(edge.to);
+                    if(edge.to == targetId){
+                        q.delete();
+                        break;
+                    }
+                }
+            }
         }
-
     }
-
 }

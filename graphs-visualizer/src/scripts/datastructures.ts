@@ -51,6 +51,9 @@ export class Queue {
     size():number{
         return this._size;
     }
+    delete():void{
+        this._size = 0;
+    }
     empty():boolean{
         if(this._size == 0){
             return true;
@@ -70,12 +73,10 @@ class HeapItem{
 
 class BinaryHeap{
     private tree:HeapItem[];
-    private smallestIndex:number;
     private _rootIndex:number;
     private _lastIndex:number;
     constructor(){
         this.tree = [];
-        this.smallestIndex = 0;
         this._rootIndex = 1;
         this._lastIndex = 1;
     }
