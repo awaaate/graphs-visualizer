@@ -7,7 +7,6 @@ class Item {
     }
 }
 
-
 export class Queue {
     private lastItem: Item;
     private firstItem: Item;
@@ -19,7 +18,7 @@ export class Queue {
     }
     push(value: number): void {
         let newItem: Item = new Item(value);
-        if(this._size == 0){
+        if(this._size === 0){
             this.firstItem = newItem;
             this.lastItem = newItem;
         }else{
@@ -29,16 +28,16 @@ export class Queue {
         this._size++;
     }
     front(): number{
-        if(this._size == 0){
+        if(this._size === 0){
             return undefined;
         }
         return this.firstItem.value;
     }
     pop(): void{
-        if(this._size == 0){
+        if(this._size === 0){
             return undefined;
         }
-        if(this._size == 1){
+        if(this._size === 1){
             this.firstItem = undefined;
             this.lastItem = undefined;
             this._size = 0;
@@ -54,7 +53,7 @@ export class Queue {
         this._size = 0;
     }
     empty(): boolean{
-        if(this._size == 0){
+        if(this._size === 0){
             return true;
         }else{
             return false;
@@ -89,7 +88,7 @@ class BinaryHeap{
 
     private mount(index: number): void{
         let parentIndex: number = this.getParent(index);
-        if(index == this._rootIndex){
+        if(index === this._rootIndex){
             return;
         }
         if(this.tree[index].value <= this.tree[parentIndex].value){
@@ -106,12 +105,11 @@ class BinaryHeap{
     }
 
     private unmount(index: number): void{
-
-        if(typeof(this.tree[index*2].value) == undefined && typeof(this.tree[index*2 + 1].value) == undefined){
+        if(this.tree[index*2] === undefined && this.tree[index*2 + 1] === undefined){
             return;
         }
         
-        if(typeof(this.tree[index*2 + 1].value) == undefined){
+        if(this.tree[index*2 + 1] === undefined){
             if(this.tree[index].value < this.tree[index * 2].value){
 
                 this.tree[index * 2].value = this.tree[index].value ^ this.tree[index * 2].value;
@@ -121,7 +119,6 @@ class BinaryHeap{
             }
             return;
         }
-
         if(this.tree[index].value > Math.max(this.tree[index*2].value,this.tree[index*2+1].value)){
             return;
         }
@@ -144,10 +141,10 @@ class BinaryHeap{
     }
 
     remove(index: number): void{
-        if(this._lastIndex == 0){
+        if(this._lastIndex === 0){
             return;
         }
-        if(this._lastIndex = 1){
+        if(this._lastIndex === 1){
             delete this.tree[this._lastIndex];
             this._lastIndex--;
             return;
@@ -156,8 +153,7 @@ class BinaryHeap{
         this.tree[this._lastIndex].value = this.tree[index].value ^ this.tree[this._lastIndex].value;
         this.tree[index].value = this.tree[index].value ^ this.tree[this._lastIndex].value;
 
-        delete this.tree[this._lastIndex].value;
-
+        delete this.tree[this._lastIndex];
         this._lastIndex--;
         this.unmount(index);
     }
@@ -195,7 +191,7 @@ export class PriorityQueue{
     }
     
     pop(): void{
-        if(this._size == 0){
+        if(this._size === 0){
             return;
         }
         this.Heap.remove(this.Heap.rootIndex());
@@ -203,14 +199,14 @@ export class PriorityQueue{
     }
 
     front(): number{
-        if(this._size == 0){
+        if(this._size === 0){
             return undefined;
         }
         return this.Heap.rootValue();
     }
 
     empty(): boolean{
-        if(this._size == 0){
+        if(this._size === 0){
             return true;
         }else{
             return false;
@@ -221,20 +217,4 @@ export class PriorityQueue{
         return this._size;
     }
 }
-
-
-const q = new PriorityQueue();
-
-q.push(1);
-q.push(2);
-q.push(3);
-console.log(q.front());
-q.push(4);
-q.push(5);
-console.log(q.front());
-q.push(3);
-q.push(4);
-console.log(q.front());
-q.push(6);
-console.log(q.front());
-console.log(q.front());
+//COMPLETE

@@ -16,7 +16,7 @@ var Queue = /** @class */ (function () {
     }
     Queue.prototype.push = function (value) {
         var newItem = new Item(value);
-        if (this._size == 0) {
+        if (this._size === 0) {
             this.firstItem = newItem;
             this.lastItem = newItem;
         }
@@ -27,16 +27,16 @@ var Queue = /** @class */ (function () {
         this._size++;
     };
     Queue.prototype.front = function () {
-        if (this._size == 0) {
+        if (this._size === 0) {
             return undefined;
         }
         return this.firstItem.value;
     };
     Queue.prototype.pop = function () {
-        if (this._size == 0) {
+        if (this._size === 0) {
             return undefined;
         }
-        if (this._size == 1) {
+        if (this._size === 1) {
             this.firstItem = undefined;
             this.lastItem = undefined;
             this._size = 0;
@@ -53,7 +53,7 @@ var Queue = /** @class */ (function () {
         this._size = 0;
     };
     Queue.prototype.empty = function () {
-        if (this._size == 0) {
+        if (this._size === 0) {
             return true;
         }
         else {
@@ -82,7 +82,7 @@ var BinaryHeap = /** @class */ (function () {
     };
     BinaryHeap.prototype.mount = function (index) {
         var parentIndex = this.getParent(index);
-        if (index == this._rootIndex) {
+        if (index === this._rootIndex) {
             return;
         }
         if (this.tree[index].value <= this.tree[parentIndex].value) {
@@ -97,10 +97,10 @@ var BinaryHeap = /** @class */ (function () {
         return;
     };
     BinaryHeap.prototype.unmount = function (index) {
-        if (typeof (this.tree[index * 2].value) == undefined && typeof (this.tree[index * 2 + 1].value) == undefined) {
+        if (this.tree[index * 2] === undefined && this.tree[index * 2 + 1] === undefined) {
             return;
         }
-        if (typeof (this.tree[index * 2 + 1].value) == undefined) {
+        if (this.tree[index * 2 + 1] === undefined) {
             if (this.tree[index].value < this.tree[index * 2].value) {
                 this.tree[index * 2].value = this.tree[index].value ^ this.tree[index * 2].value;
                 this.tree[index].value = this.tree[index].value ^ this.tree[index * 2].value;
@@ -125,17 +125,11 @@ var BinaryHeap = /** @class */ (function () {
         }
         return;
     };
-    BinaryHeap.prototype.insert = function (value) {
-        this.tree[this._indexToAdd] = new HeapItem(value);
-        this.mount(this._indexToAdd);
-        this._indexToAdd++;
-        this._lastIndex++;
-    };
     BinaryHeap.prototype.remove = function (index) {
-        if (this._lastIndex == 0) {
+        if (this._lastIndex === 0) {
             return;
         }
-        if (this._lastIndex = 1) {
+        if (this._lastIndex === 1) {
             delete this.tree[this._lastIndex];
             this._lastIndex--;
             return;
@@ -143,9 +137,15 @@ var BinaryHeap = /** @class */ (function () {
         this.tree[index].value = this.tree[index].value ^ this.tree[this._lastIndex].value;
         this.tree[this._lastIndex].value = this.tree[index].value ^ this.tree[this._lastIndex].value;
         this.tree[index].value = this.tree[index].value ^ this.tree[this._lastIndex].value;
-        delete this.tree[this._lastIndex].value;
+        delete this.tree[this._lastIndex];
         this._lastIndex--;
         this.unmount(index);
+    };
+    BinaryHeap.prototype.insert = function (value) {
+        this.tree[this._indexToAdd] = new HeapItem(value);
+        this.mount(this._indexToAdd);
+        this._indexToAdd++;
+        this._lastIndex++;
     };
     BinaryHeap.prototype.rootIndex = function () {
         return this._rootIndex;
@@ -168,20 +168,20 @@ var PriorityQueue = /** @class */ (function () {
         this._size++;
     };
     PriorityQueue.prototype.pop = function () {
-        if (this._size == 0) {
+        if (this._size === 0) {
             return;
         }
         this.Heap.remove(this.Heap.rootIndex());
         this._size--;
     };
     PriorityQueue.prototype.front = function () {
-        if (this._size == 0) {
+        if (this._size === 0) {
             return undefined;
         }
         return this.Heap.rootValue();
     };
     PriorityQueue.prototype.empty = function () {
-        if (this._size == 0) {
+        if (this._size === 0) {
             return true;
         }
         else {
@@ -194,18 +194,4 @@ var PriorityQueue = /** @class */ (function () {
     return PriorityQueue;
 }());
 exports.PriorityQueue = PriorityQueue;
-var q = new PriorityQueue();
-q.push(1);
-q.push(2);
-q.push(3);
-console.log(q.front());
-q.push(4);
-q.push(5);
-console.log(q.front());
-q.push(3);
-q.push(4);
-console.log(q.front());
-q.push(6);
-console.log(q.front());
-q.pop();
-console.log(q.front());
+//COMPLETE
