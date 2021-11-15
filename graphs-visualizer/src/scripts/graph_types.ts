@@ -43,7 +43,6 @@ export class Graph{
         this.distance.map((item,index)=> {return INF});
         this.clean = true;
     }
-
     runBFS(sourceId:number, targetId:number):void{
         if(!this.clean){
             this.reset();
