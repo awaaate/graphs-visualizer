@@ -64,13 +64,16 @@ export class Queue {
 
 class HeapItem{
     value: number;
-    items: any[];
-    constructor(value){
-        this.items = [];
+    secondValue:number;
+    constructor(value:number, secondValue:number){
+        this.secondValue = secondValue;
         this.value = value;
     }
 }
 
+function swap(a:any, b:any){
+    return [b,a];
+}
 class BinaryHeap{
     private tree: HeapItem[];
     private _rootIndex: number;
@@ -95,10 +98,12 @@ class BinaryHeap{
             return;
         }else{
 
+            [this.tree[index].secondValue,this.tree[parentIndex].secondValue] = swap(this.tree[index].secondValue,this.tree[parentIndex].secondValue);
             this.tree[index].value =  this.tree[parentIndex].value ^ this.tree[index].value;
             this.tree[parentIndex].value = this.tree[parentIndex].value ^ this.tree[index].value;
             this.tree[index].value = this.tree[parentIndex].value ^ this.tree[index].value;
             
+
             this.mount(parentIndex);
         }
         return;
@@ -112,6 +117,7 @@ class BinaryHeap{
         if(this.tree[index*2 + 1] === undefined){
             if(this.tree[index].value < this.tree[index * 2].value){
 
+                [this.tree[index * 2].secondValue,this.tree[index].secondValue] = swap(this.tree[index*2].secondValue,this.tree[index].secondValue);
                 this.tree[index * 2].value = this.tree[index].value ^ this.tree[index * 2].value;
                 this.tree[index].value = this.tree[index].value ^ this.tree[index * 2].value;
                 this.tree[index * 2].value = this.tree[index].value ^ this.tree[index * 2].value;
@@ -124,6 +130,7 @@ class BinaryHeap{
         }
         if(this.tree[index*2].value > this.tree[index*2 + 1].value){
 
+            [this.tree[index * 2].secondValue,this.tree[index].secondValue] = swap(this.tree[index*2].secondValue,this.tree[index].secondValue);
             this.tree[index*2].value = this.tree[index].value ^this.tree[index*2].value;
             this.tree[index].value = this.tree[index].value ^this.tree[index*2].value;
             this.tree[index*2].value = this.tree[index].value ^this.tree[index*2].value;
@@ -131,6 +138,7 @@ class BinaryHeap{
             this.unmount(index*2);
         }else{
 
+            [this.tree[index*2 + 1].secondValue,this.tree[index].secondValue] = swap(this.tree[index*2 + 1].secondValue,this.tree[index].secondValue);
             this.tree[index*2 + 1].value = this.tree[index].value ^this.tree[index*2 + 1].value;
             this.tree[index].value = this.tree[index].value ^this.tree[index*2 + 1].value;
             this.tree[index*2 + 1].value = this.tree[index].value ^this.tree[index*2 + 1].value;
@@ -147,19 +155,23 @@ class BinaryHeap{
         if(this._lastIndex === 1){
             delete this.tree[this._lastIndex];
             this._lastIndex--;
+            this._indexToAdd--;
             return;
         }
+        [this.tree[index].secondValue,this.tree[this._lastIndex].secondValue] = swap(this.tree[index].secondValue,this.tree[this._lastIndex].secondValue);
+
         this.tree[index].value = this.tree[index].value ^ this.tree[this._lastIndex].value;
         this.tree[this._lastIndex].value = this.tree[index].value ^ this.tree[this._lastIndex].value;
         this.tree[index].value = this.tree[index].value ^ this.tree[this._lastIndex].value;
 
         delete this.tree[this._lastIndex];
         this._lastIndex--;
+        this._indexToAdd--;
         this.unmount(index);
     }
 
-    insert(value: number): void{
-        this.tree[this._indexToAdd] = new HeapItem(value);
+    insert(value: number,secondValue:number): void{
+        this.tree[this._indexToAdd] = new HeapItem(value,secondValue);
         this.mount(this._indexToAdd);
         this._indexToAdd++;
         this._lastIndex++;
@@ -171,7 +183,9 @@ class BinaryHeap{
     rootValue(): number{
         return this.tree[this._rootIndex].value;
     }
-
+    rootSecondValue(): number{
+        return this.tree[this._rootIndex].secondValue;
+    }
     lastIndex(): number{
         return this._lastIndex;
     }
@@ -185,8 +199,8 @@ export class PriorityQueue{
         this.Heap = new BinaryHeap();
         this._size = 0;
     }
-    push(value: number): void{
-        this.Heap.insert(value);
+    push(value: number,secondValue: number = undefined): void{
+        this.Heap.insert(value, secondValue);
         this._size++;
     }
     
@@ -198,11 +212,11 @@ export class PriorityQueue{
         this._size--;
     }
 
-    front(): number{
+    front(): number[]{
         if(this._size === 0){
             return undefined;
         }
-        return this.Heap.rootValue();
+        return [this.Heap.rootValue(), this.Heap.rootSecondValue()];
     }
 
     empty(): boolean{
@@ -218,3 +232,11 @@ export class PriorityQueue{
     }
 }
 //COMPLETE
+
+
+const q = new PriorityQueue();
+q.push(0,1);
+q.pop();
+console.log(q);
+q.push(1,0);
+console.log(q.front());
