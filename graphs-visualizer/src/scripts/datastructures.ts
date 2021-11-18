@@ -234,6 +234,35 @@ export class PriorityQueue{
 //COMPLETE
 
 
+
+export class DSU{
+    par: number[];
+    constructor(n:number){
+        for(let i=0; i<n + 10;++i){
+            this.par[i] = i;
+        }
+    }
+
+    find(i:number):number{
+        if(this.par[i] === i){
+            return i;
+        }else{
+            return this.par[i] = this.find(this.par[i]);
+        }
+    }
+    
+    add(i:number, j:number):void{
+        this.par[this.find(j)] = this.find(i);
+    }
+    checkSame(i:number, j:number):boolean{
+        if(this.find(i) === this.find(j)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+
 const q = new PriorityQueue();
 q.push(0,1);
 q.pop();

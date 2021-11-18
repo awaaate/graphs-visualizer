@@ -181,7 +181,6 @@ export class Graph{
         }
         console.log(this.id_node[targetId].distance);
     }
-
     runDFS(sourceId:number):void{
         this.cleanGraph();
         this.clean = false;
