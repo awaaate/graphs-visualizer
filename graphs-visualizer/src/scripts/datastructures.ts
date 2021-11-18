@@ -1,4 +1,4 @@
-class Item {
+class QueueItem {
     value: number;
     nextItem: any;
     constructor(value: number){
@@ -8,8 +8,8 @@ class Item {
 }
 
 export class Queue {
-    private lastItem: Item;
-    private firstItem: Item;
+    private lastItem: QueueItem;
+    private firstItem: QueueItem;
     private _size:number;
     constructor() {
         this.lastItem = undefined;
@@ -17,7 +17,7 @@ export class Queue {
         this._size = 0;
     }
     push(value: number): void {
-        let newItem: Item = new Item(value);
+        let newItem: QueueItem = new QueueItem(value);
         if(this._size === 0){
             this.firstItem = newItem;
             this.lastItem = newItem;
@@ -74,6 +74,7 @@ class HeapItem{
 function swap(a:any, b:any){
     return [b,a];
 }
+
 class BinaryHeap{
     private tree: HeapItem[];
     private _rootIndex: number;
@@ -191,7 +192,6 @@ class BinaryHeap{
     }
 }
 
-
 export class PriorityQueue{
     private Heap: BinaryHeap;
     private _size: number;
@@ -231,9 +231,49 @@ export class PriorityQueue{
         return this._size;
     }
 }
-//COMPLETE
 
+class StackItem{
+    value:any;
+    items:any[];
+    constructor(item:any){
+        this.items = [];
+        this.value = item;
+    }
+}
 
+export class Stack{
+    array:StackItem[];
+    _size:number;
+    constructor(){
+        this.array = [];
+        this._size = 0;
+    }
+    push(item:any,...values){
+        this.array.push(new StackItem(item));
+        this.array[this._size].items = values;
+        this._size++;
+    }
+    pop():void{
+        if(this._size === 0)return;
+        this.array.pop();
+        this._size--;
+    }
+    top():any{
+        if(this._size === 0)return undefined;
+        return this.array[this._size];
+    }
+    empty():boolean{
+        if(this._size === 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    size(){
+        return this._size;
+    }
+
+}
 
 export class DSU{
     par: number[];
@@ -263,9 +303,3 @@ export class DSU{
     }
 }
 
-const q = new PriorityQueue();
-q.push(0,1);
-q.pop();
-console.log(q);
-q.push(1,0);
-console.log(q.front());

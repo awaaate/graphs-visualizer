@@ -1,4 +1,4 @@
-import {PriorityQueue, Queue} from "./datastructures"
+import {PriorityQueue, Queue, Stack} from "./datastructures"
 export const INF:number = 8007199254740991//normal intmax 
 
 export function retrivePath(par:number[], targetId:number, sourceId:number){
@@ -185,13 +185,13 @@ export class Graph{
         this.cleanGraph();
         this.clean = false;
 
-        let stack:number[] = [];
-
+        const stack = new Stack();
         stack.push(sourceId);
         this.id_node[sourceId].visited = true;
 
-        while(stack.length != 0){
-            let curr = stack.pop();
+        while(!stack.empty()){
+            let curr = stack.top();
+            stack.pop();
             for(let edge of this.id_node[curr].adjList){
                 if(!this.id_node[edge.to].visited){
                     stack.push(edge.to);
