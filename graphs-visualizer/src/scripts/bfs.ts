@@ -11,17 +11,6 @@ export function prepareForBfs(graph: Graph) {
     bfs(nodesForBfs);
 }
 
-export function retrivePath(par:number[], targetId:number, sourceId:number){
-    const path:number[] = [];
-    let curr = targetId;
-    path.push(curr);
-    while(curr != sourceId){
-        curr = par[curr];
-        path.push(curr);
-    }
-    path.reverse();
-    return path;
-}
 
 export function bfs(nodes: BfsNodes) {
     const ids = Object.keys(nodes);
