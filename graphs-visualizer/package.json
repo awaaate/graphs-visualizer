@@ -5,10 +5,14 @@
     "license": "MIT",
     "source": "src/index.html",
     "scripts": {
-        "start": "parcel",
-        "build": "parcel build"
+        "start": "npx parcel",
+        "build": "npx parcel build"
     },
     "devDependencies": {
-        "parcel": "^2.0.1"
+        "autoprefixer": "^10.4.0",
+        "parcel": "^2.0.1",
+        "postcss": "^8.3.11",
+        "postcss-import": "^14.0.2",
+        "tailwindcss": "^2.2.19"
     }
 }
