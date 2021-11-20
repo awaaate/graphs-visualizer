@@ -1,15 +1,17 @@
 import { createGraph } from "./graph";
-import { Graph } from "././graph_types";
+import { Graph, Node } from "././graph_types";
 import { createElement } from "./utils";
 //20
 //columnas
 // 7
 //row 2
-function getCoordFromGrid(gridSize: number, i: number) {
+function getCoordFromGrid(gridSize: number, i: number):number[] {
     const row = Math.floor(i / gridSize);
     const column = i % gridSize;
     return [row, column];
 }
+
+
 export function makeGrid(graphSize: number, gridSize: number) {
     const grid = [];
     const gridElement = createElement("div", {
@@ -31,4 +33,7 @@ export function makeGrid(graphSize: number, gridSize: number) {
     ];
 }
 
-function printNode(node: Node) {}
+export function printNode(vertex: Node) {
+    return;
+}
+

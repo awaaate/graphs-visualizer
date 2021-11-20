@@ -1,19 +1,20 @@
 import { PriorityQueue, Queue, Stack } from "./datastructures";
+import {printNode} from "./visualizer";
+
 export const INF: number = 8007199254740991; //normal intmax
 
-
-
-export function retrivePath(par: number[], targetId: number, sourceId: number) {
-    const path: number[] = [];
+export function retrivePath(par: number[], targetId: number, sourceId: number, id_node:Node[]):Node[] {
+    const path: Node[] = [];
     let curr = targetId;
-    path.push(curr);
+    path.push(id_node[curr]);
     while (curr != sourceId) {
         curr = par[curr];
-        path.push(curr);
+        path.push(id_node[curr]);
     }
     path.reverse();
     return path;
 }
+
 
 class Edge {
     public weight: number;
@@ -87,8 +88,9 @@ export class Graph {
     type: string;
     element: HTMLElement;
     id_node: Node[]; //means gives and id, returns node;
-    coord_id:number[][];
-    constructor(n: number, type: string = "grid") {
+    coord_id:number[][];//means given a coord returns id;
+
+    constructor(n: number = 0, type: string = "grid") {
         this.clean = false;
         this.id_node = [];
         this.size = n;
@@ -103,7 +105,7 @@ export class Graph {
     getId(x:number, y:number){
         return this.coord_id[x][y];
     }
-    update(id:number, x:number, y:number){
+    private update(id:number, x:number, y:number){
         this.coord_id[x][y] = id;
         this.coord_id[y][x] = id;
     }
@@ -115,7 +117,7 @@ export class Graph {
         }
     }
 
-    create(n: number) {
+    private create(n: number) {
         //created the graph of size n;
         //pushes all nodes to the node list;
         if(this.type == "graph"){
@@ -126,12 +128,15 @@ export class Graph {
         }
     }
 
-    generateAdj(id:number, x:number, y:number):void{
+    private generateAdj(id:number, x:number, y:number):void{
         //GIVEN AN ID AND COORDS OF THE ID VERTEX, ADDS THE CORRESPONDING VERTICES TO THE GRAPH;
 
         if(this.type === "grid"){
             const array:number[][] = [[1,0],[0,1],[-1,0],[0,-1]];
             for(const coord of array){
+                if(this.coord_id[x+coord[0]][y+coord[1]] != undefined){
+                    continue;
+                }
                 this.id_node.push(new Node(this.size, this.element));
                 this.addEdge(id,this.size);
                 this.update(this.size, x +coord[0],y + coord[1]);
@@ -140,7 +145,7 @@ export class Graph {
             }
         }
     }
-    cleanGraph(): void {
+    private cleanGraph(): void {
         //Resets the every node of the graph to 0 distance and not visited;
         //sets clean to true;
         if (this.clean) return;
@@ -153,7 +158,7 @@ export class Graph {
 
 
 
-    runBFS({sourceId=undefined, targetId=undefined,sourceCoords = [undefined,undefined], targetCoords =[undefined,undefined]} ): void {
+    runBFS({sourceId=undefined, targetId=undefined,sourceCoords = [undefined,undefined], targetCoords =[undefined,undefined]} ): object {
         //runs BFS
         this.cleanGraph();
         this.clean = false;
@@ -178,6 +183,9 @@ export class Graph {
             if(found){
                 break;
             }
+
+            printNode(this.id_node[curr]);
+
             this.id_node[curr].visited = true;
             q.pop();
             this.generateAdj(curr, this.id_node[curr].coords.x, this.id_node[curr].coords.y);
@@ -194,8 +202,7 @@ export class Graph {
                 }
             }
         }
-
-        console.log(this.id_node[targetId].distance);
+        return {path:retrivePath(par,sourceId, targetId,this.id_node),id_node:this.id_node};
     }
 
     runDjikstra(sourceId: number, targetId: number): void {
