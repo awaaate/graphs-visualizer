@@ -107,8 +107,5 @@ export class Graph {
         }
         this.cleanBool = true;
     }
-
-
-
    
 }

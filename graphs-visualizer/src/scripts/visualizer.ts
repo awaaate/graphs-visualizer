@@ -11,7 +11,7 @@ export const gridY:number = 50;
 
 
 function getCoords(id:number): number[]{
-    return [id%gridX, Math.floor(id/gridX)];
+    return [Math.floor(id/gridX),id%gridX];
 }
 
 function getId(x:number, y:number):number{
