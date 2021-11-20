@@ -24,7 +24,7 @@ function runBFS(graph:Graph, sourceId:number, targetId:number):void{
             break;
         }
         for(let edge of graph.id_node[curr].adjList){
-            if(graph.id_node[edge.to].visited === true)continue;
+            if(graph.id_node[edge.to].visited === true || graph.id_node[edge.to].wall)continue;
             else{
                 if(edge.to === targetId){
                     found = true;

@@ -36,7 +36,7 @@ export class Node {
     public element?: HTMLElement;
     public id: number;
     public adjList: Edge[];
-
+    public wall:boolean;
     public visited: boolean;
     public distance: number;
     constructor(id: number, parentElement: HTMLElement) {
@@ -46,7 +46,7 @@ export class Node {
 
         this.adjList = [];
         this.id = id;
-
+        this.wall = false;
         this.visited = false;
         this.distance = INF;
 
