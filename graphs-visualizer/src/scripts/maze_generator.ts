@@ -1,9 +1,9 @@
 import { Graph } from "./graph_types";
 import { getId, random, valid } from "./utils";
 import { paintWall } from "./visualizer";
-import {GRID_X, GRID_Y} from "./constants";
-
-
+import {GRID_X, GRID_Y, EXPANSION_SLEEP_TIME} from "./constants";
+import {sleep } from "./utils";
+import { Stack } from "./datastructures"
 
 
 
@@ -33,26 +33,27 @@ function generate(x:number, y:number):number[][]{
 }
 
 
-function delWall(graph:Graph, x:number, y:number):void{
+async function delWall(graph:Graph, x:number, y:number){
+    sleep(EXPANSION_SLEEP_TIME);
     graph.id_node[getId(x,y)].wall = false;
     paintWall(graph.id_node[getId(x,y)]);
 }
 
 
-function dfs(graph:Graph, x:number, y:number):void{
-    delWall(graph,x,y);
+async function dfs(graph:Graph, x:number, y:number){
     graph.id_node[getId(x,y)].visited = true;
+    delWall(graph, x, y);
     for(let add of generate(x,y)){
         if(!graph.id_node[getId(x + add[0],y + add[1])].visited){
-            dfs(graph,x +add[0], y + add[1]);
             delWall(graph, x + add[0]/2, y +add[1]/2);
+            dfs(graph,x +add[0], y + add[1]);
         }
     }
 }
 
 
 
-export function maze_generator(graph:Graph){
+export async function maze_generator(graph:Graph){
     graph.clean();
 
     let wall:boolean[][] = [];
@@ -80,7 +81,6 @@ export function maze_generator(graph:Graph){
         sX = random(0,GRID_X-1);
         sY = random(0, GRID_Y-1);
     }
-    
+
     dfs(graph, sX, sY);
-    return;
 }
