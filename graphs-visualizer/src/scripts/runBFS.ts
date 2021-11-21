@@ -2,20 +2,20 @@ import { Queue } from "./datastructures";
 import { Graph, Node, retrivePath } from "./graph_types";
 import { sleep } from "./utils";
 import { printNode, printPath } from "./visualizer";
+import {INF, GRID_X, GRID_Y, EXPANSION_SLEEP_TIME } from "./constants";
 
 export async function runBFS(graph: Graph, sourceId: number, targetId: number) {
     graph.clean();
-
+    graph.running = true;
     const q = new Queue();
-
     const q2 = new Queue();
+    q.push(sourceId);
     q2.push(0);
 
     graph.id_node[sourceId].distance = 0;
     graph.id_node[sourceId].visited = true;
 
     let found: boolean = false;
-
     let par: number[] = [];
 
     for (let node of graph.id_node) {
@@ -30,15 +30,18 @@ export async function runBFS(graph: Graph, sourceId: number, targetId: number) {
     while (!q.empty()) {
         let curr = q.front();
         q.pop();
-
         let dist = q2.front();
         q2.pop();
+
+        if(graph.id_node[curr].wall === true){
+            continue;
+        }
 
         if (currentDist != dist) {
             if (found) {
                 break;
             }
-            await sleep(100);
+            await sleep(EXPANSION_SLEEP_TIME);
             currentDist = dist;
         }
 
@@ -47,7 +50,7 @@ export async function runBFS(graph: Graph, sourceId: number, targetId: number) {
         for (let edge of graph.id_node[curr].adjList) {
             if (
                 graph.id_node[edge.to].visited === true ||
-                graph.id_node[edge.to].wall
+                graph.id_node[edge.to].wall === true
             )
                 continue;
             else {
@@ -63,6 +66,8 @@ export async function runBFS(graph: Graph, sourceId: number, targetId: number) {
             }
         }
     }
+    if(graph.id_node[targetId].distance === INF)return;
     const path = retrivePath(par, sourceId, targetId);
-    printPath(graph, path);
+    await printPath(graph, path);
+    graph.running = false;
 }

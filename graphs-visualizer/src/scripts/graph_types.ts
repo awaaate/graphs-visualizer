@@ -1,7 +1,7 @@
 import { PriorityQueue, Queue, Stack } from "./datastructures";
 import { printNode } from "./visualizer";
+import {INF, GRID_X, GRID_Y, } from "./constants";
 
-export const INF: number = 8007199254740991; //normal intmax
 
 export function retrivePath(
     par: number[],
@@ -9,7 +9,6 @@ export function retrivePath(
     targetId: number
 ): number[] {
     const path: number[] = [];
-
     let curr = targetId;
     path.push(curr);
     while (curr != sourceId ) {
@@ -43,7 +42,6 @@ export class Node {
     public visited: boolean;
     public distance: number;
     public type: string;
-
     constructor(id: number, parentElement: HTMLElement) {
         //this.element = document.createElement("span");
         //this.element.id = id.toString();
@@ -69,13 +67,18 @@ export class Graph {
     type: string;
     element: HTMLElement;
     id_node: Node[]; //means gives and id, returns node;
+    running : boolean;
 
+    status : "wall"| "not-wall";
+    private _clicked: number;
     constructor(n: number = 0, type: string = "grid") {
         this.cleanBool = false;
         this.id_node = [];
         this.size = n;
         this.type = type;
-
+        this._clicked = null;
+        this.running = false;
+        this.status = "not-wall";
         const element = document.createElement("div");
         element.classList.add("graph");
         this.element = element;
@@ -98,11 +101,16 @@ export class Graph {
     clean(): void {
         //Resets the every node of the graph to 0 distance and not visited;
         //sets clean to true;
-        if (this.cleanBool) return;
         for (let i = 0; i < this.size; ++i) {
             this.id_node[i].visited = false;
             this.id_node[i].distance = INF;
+            printNode(this.id_node[i],"reset");
         }
-        this.cleanBool = true;
+    }
+    set clicked(bool:number){
+        this._clicked = bool;
+    }
+    get clicked(){
+        return this._clicked;
     }
 }

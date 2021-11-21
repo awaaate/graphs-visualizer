@@ -7,6 +7,7 @@ class QueueItem {
     }
 }
 
+
 export class Queue {
     private lastItem: QueueItem;
     private firstItem: QueueItem;

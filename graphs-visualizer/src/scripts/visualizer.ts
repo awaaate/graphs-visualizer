@@ -1,14 +1,26 @@
 import { classNames } from "./classNames";
 import { Graph, Node, retrivePath } from "./graph_types";
-import { createElement, createNode } from "./utils";
-
+import {
+    createElement,
+    createNode,
+    sleep,
+    getCoords,
+    getId,
+    inGrid,
+    getGridItemByPosition,
+} from "./utils";
+import {
+    INF,
+    GRID_X,
+    GRID_Y,
+    EXPANSION_SLEEP_TIME,
+    NODE_SIZE,
+} from "./constants";
 //20
 //columnas
 // 7
 //row 2
-export const gridX: number = 10;
-export const gridY: number = 10;
-export const nodeSize: number = 75;
+
 /*
 window.document
 createElement("tag");
@@ -22,61 +34,114 @@ div.style
 
 export function printNode(
     vertex: Node,
-    type: "source" | "target" | "path" | "normal"
+    type: "source" | "target" | "path" | "normal" | "reset"
 ): void {
     let newClass = "";
     if (type === "source") {
-        newClass = "bg-red-500";
+        newClass = "bg-path";
     } else if (type === "target") {
-        newClass = "bg-red-500";
+        newClass = "bg-path";
     } else if (type === "path") {
-        newClass = "bg-blue-500";
+        newClass = "bg-path";
+    } else if (type === "normal") {
+        newClass = "bg-normal";
     } else {
-        newClass = "bg-green-500";
+        vertex.element.classList.remove(
+            "bg-path",
+            "bg-normal",
+            "bg-green"
+        );
+        newClass = "bg-white-500";
     }
     vertex.element.classList.add(newClass);
     return;
 }
 
-export function printPath(graph: Graph, path: number[]): void {
+export async function printPath(graph: Graph, path: number[]) {
     let counter = 0;
     for (let id of path) {
-        if (counter === 0 || counter === path.length - 1){
+        if (counter === 0 || counter === path.length - 1) {
             counter++;
-            continue
+            continue;
         }
         counter++;
         printNode(graph.id_node[id], "path");
+        await sleep(EXPANSION_SLEEP_TIME);
     }
 }
 
-function getCoords(id: number): number[] {
-    return [Math.floor(id / gridX), id % gridX];
-}
-
-function getId(x: number, y: number): number {
-    return y + x * gridX;
-}
-function inGrid(x: number, y: number): boolean {
-    if (x >= 0 && x < gridX && y >= 0 && y < gridY) return true;
-    return false;
+function paintWall(node: Node): void {
+    if (node.wall) {
+        // true
+        node.element.style.background = "black";
+    } else {
+        node.element.style.background = "white";
+    }
 }
 
 export function createGridGraph(graph: Graph, weighted: boolean = false) {
-    graph.element.style.width = gridX * nodeSize + "px";
-    graph.element.style.height = gridY * nodeSize + "px";
-    graph.element.classList.add(
-        ...`bg-black grid grid-cols-${gridX}`.split(" ")
-    );
-    for (let X = 0; X < gridX; ++X) {
-        for (let Y = 0; Y < gridY; ++Y) {
+    graph.element.style.width = GRID_Y * NODE_SIZE + "px";
+    graph.element.style.height = GRID_Y * NODE_SIZE + "px";
+    graph.element.style.gridTemplateColumns = `repeat(${GRID_Y}, 1fr)`;
+    graph.element.classList.add(...`bg-black grid`.split(" "));
+    for (let X = 0; X < GRID_Y; ++X) {
+        for (let Y = 0; Y < GRID_Y; ++Y) {
             const id = getId(X, Y);
             graph.addNode(id);
             graph.id_node[id].element = createNode(id);
-            graph.id_node[id].element.textContent = id.toString();
+            graph.id_node[id].element.setAttribute(
+                "ondragstart",
+                "return false;"
+            );
+            graph.id_node[id].element.draggable = false;
+           /*  graph.id_node[id].element.textContent = id.toString(); */
+            /*  graph.id_node[id].element.addEventListener(
+                "mouseenter",
+                (event) => {
+                    if (graph.clicked !== null) {
+                        graph.clicked = id;
+                        graph.id_node[id].wall =
+                            graph.status === "wall" ? true : false;
+                        paintWall(graph.id_node[id]);
+                    }
+                }
+            ); */
             graph.element.appendChild(graph.id_node[id].element);
         }
     }
+
+    graph.element.addEventListener("mousedown", (event) => {
+        const target = event.target as HTMLElement;
+        const id = parseInt(target.id);
+        if (target !== graph.element) {
+            graph.clicked = id;
+            graph.status = graph.id_node[id].wall ? "not-wall" : "wall";
+            graph.id_node[id].wall = !graph.id_node[id].wall;
+            paintWall(graph.id_node[id]);
+        }
+    });
+
+    graph.element.addEventListener("mousemove", (event) => {
+        if (graph.clicked !== null) {
+            const target = getGridItemByPosition(event.x, event.y);
+
+            console.log("true")
+            if (target) {
+                const id = parseInt(target.id);
+                if (id !== graph.clicked) {
+                    //last clicked
+                    graph.id_node[id].wall =
+                        graph.status === "wall" ? true : false;
+                    paintWall(graph.id_node[id]);
+                    graph.clicked = id;
+                }
+            }
+        }
+    });
+    graph.element.addEventListener("mouseup", (event) => {
+        graph.clicked = null;
+    });
+
     const adder: number[][] = [
         [1, 0],
         [0, 1],
@@ -84,8 +149,8 @@ export function createGridGraph(graph: Graph, weighted: boolean = false) {
         [0, -1],
     ];
 
-    for (let X = 0; X < gridX; ++X) {
-        for (let Y = 0; Y < gridY; ++Y) {
+    for (let X = 0; X < GRID_Y; ++X) {
+        for (let Y = 0; Y < GRID_Y; ++Y) {
             const id: number = getId(X, Y);
             for (let add of adder) {
                 if (!inGrid(X + add[0], Y + add[1])) continue;
@@ -103,7 +168,7 @@ export function createGridGraph(graph: Graph, weighted: boolean = false) {
 }
 let i = 0;
 
-// gridX, gridY //
+// GRID_Y, GRID_Y //
 export function makeGrid(graph: Graph) {
     if (i === 0) {
         document.body.appendChild(graph.element);
