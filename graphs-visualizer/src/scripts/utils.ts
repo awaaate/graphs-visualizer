@@ -47,3 +47,17 @@ export function getGridItemByPosition(x, y) {
     const element = document.elementFromPoint(x, y);
     return element;
 }
+
+
+
+export function random(min:number, max:number):number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function valid(x:number, y:number):boolean{
+    if(0<=x && x < GRID_X && 0 <= y &&  y<GRID_Y){
+        return true;
+    }else{
+        return false;
+    }
+}

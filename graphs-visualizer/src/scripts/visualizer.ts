@@ -70,7 +70,7 @@ export async function printPath(graph: Graph, path: number[]) {
     }
 }
 
-function paintWall(node: Node): void {
+export function paintWall(node: Node): void {
     if (node.wall) {
         // true
         node.element.style.background = "black";
