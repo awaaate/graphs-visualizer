@@ -1,15 +1,19 @@
-import { generateMaze } from "./scripts/better_maze-generator";
 import { Graph } from "./scripts/graph_types";
+import { maze_generator } from "./scripts/maze_generator";
 import { runBFS } from "./scripts/runBFS";
 import { createGridGraph, makeGrid } from "./scripts/visualizer";
 const appElement = document.getElementById("app");
-const graph = generateMaze(createGridGraph((new Graph())));
+const graph = createGridGraph((new Graph()));
 
 appElement.appendChild(graph.element);
-
+const mazeGenButton = document.getElementById("maze-gen-button");
 const sourceInput = document.getElementById("sourceInput") as HTMLInputElement;
 const targetInput = document.getElementById("targetInput") as HTMLInputElement;
 const bfsForm = document.getElementById("bfsForm");
+
+mazeGenButton.addEventListener("click", (event) =>{
+    maze_generator(graph);
+});
 
 bfsForm.addEventListener("submit", (e) => {
     e.preventDefault();
