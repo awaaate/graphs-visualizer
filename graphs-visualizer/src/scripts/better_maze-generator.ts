@@ -1,10 +1,7 @@
 import { GRID_Y, GRID_X } from "./constants";
 import { Graph } from "./graph_types";
-import { getCoords } from "./utils";
+import { getCoords, getId } from "./utils";
 
-function getIndx(x: number, y: number): number {
-    return y + x * GRID_Y;
-}
 let count = 0;
 function next(indx: number, visited: number[]) {
     count++;
@@ -18,7 +15,7 @@ function next(indx: number, visited: number[]) {
     ];
 
     for (let neighbour of neighbours) {
-        const newIdx = getIndx(x + neighbour[0], y + neighbour[1]);
+        const newIdx = getId(x + neighbour[0], y + neighbour[1]);
         if (visited[newIdx] === 0) {
             notVisitedNeighbours.push(newIdx);
         }

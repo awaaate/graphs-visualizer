@@ -34,7 +34,6 @@ function generate(x:number, y:number):number[][]{
 
 
 async function delWall(graph:Graph, x:number, y:number){
-    sleep(EXPANSION_SLEEP_TIME);
     graph.id_node[getId(x,y)].wall = false;
     paintWall(graph.id_node[getId(x,y)]);
 }
@@ -42,9 +41,11 @@ async function delWall(graph:Graph, x:number, y:number){
 
 async function dfs(graph:Graph, x:number, y:number){
     graph.id_node[getId(x,y)].visited = true;
+    sleep(EXPANSION_SLEEP_TIME);
     delWall(graph, x, y);
     for(let add of generate(x,y)){
         if(!graph.id_node[getId(x + add[0],y + add[1])].visited){
+            sleep(EXPANSION_SLEEP_TIME);
             delWall(graph, x + add[0]/2, y +add[1]/2);
             dfs(graph,x +add[0], y + add[1]);
         }
