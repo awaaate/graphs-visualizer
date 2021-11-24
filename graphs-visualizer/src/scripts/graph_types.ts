@@ -1,5 +1,6 @@
 import { printNode } from "./visualizer";
-import {INF, GRID_X, GRID_Y, } from "./constants";
+import {INF } from "./constants";
+import { random } from "./utils";
 
 
 export function retrivePath(
@@ -41,11 +42,11 @@ export class Node {
     public visited: boolean;
     public distance: number;
     public type: string;
+    public enterCost:object;
     constructor(id: number, parentElement: HTMLElement) {
         //this.element = document.createElement("span");
         //this.element.id = id.toString();
         //this.element.textContent = id.toString();
-
         this.adjList = [];
         this.id = id;
         this.wall = false;
@@ -67,6 +68,7 @@ export class Graph {
     element: HTMLElement;
     id_node: Node[]; //means gives and id, returns node;
     running : boolean;
+    weighted: boolean;
 
     status : "wall"| "not-wall";
     private _clicked: number;
@@ -74,6 +76,7 @@ export class Graph {
         this.cleanBool = false;
         this.id_node = [];
         this.size = n;
+        this.weighted = false;
         this.type = type;
         this._clicked = null;
         this.running = false;
@@ -91,6 +94,9 @@ export class Graph {
 
     addEdge(nodeA: number, nodeB: number, undirected: boolean = true, w = 1) {
         //Adds a node to the graph;
+        if(w != 1){
+            this.weighted = true;
+        }
         this.id_node[nodeA].adjList.push(new Edge(nodeB, w));
         if (undirected) {
             this.id_node[nodeB].adjList.push(new Edge(nodeA, w));
@@ -105,6 +111,23 @@ export class Graph {
             this.id_node[i].distance = INF;
             printNode(this.id_node[i],"reset");
         }
+    }
+
+    setRandomCosts(max:number):void{
+        this.weighted = true;
+        for( let stringNodeIndex in this.id_node){
+            const index = parseInt(stringNodeIndex);
+            for(let stringEdgeIndex in this.id_node[index]){
+                const edgeIndex = parseInt(stringEdgeIndex);
+                const number = random(1,max);
+                this.id_node[index].adjList[edgeIndex].weight = number;
+                const quotient = number/max;
+                const maxColor = 240;//CHANGE;
+                const tonality = quotient * maxColor;
+                //PAINT THE VERTEX IN THIS TONALITY;
+            }
+        }
+        return;
     }
     set clicked(bool:number){
         this._clicked = bool;

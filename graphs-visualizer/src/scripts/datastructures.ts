@@ -261,7 +261,7 @@ export class Stack{
     }
     top():any{
         if(this._size === 0)return undefined;
-        return this.array[this._size];
+        return this.array[this._size -1];
     }
     empty():boolean{
         if(this._size === 0){
