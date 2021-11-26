@@ -3,7 +3,7 @@ import { maze_generator } from "./scripts/maze_generator";
 import { runBFS } from "./scripts/runBFS";
 import { createGridGraph, makeGrid } from "./scripts/visualizer";
 const appElement = document.getElementById("app");
-const graph = createGridGraph((new Graph()));
+const graph = createGridGraph((new Graph(0,"grid",false,false)));
 
 appElement.appendChild(graph.element);
 const mazeGenButton = document.getElementById("maze-gen-button");

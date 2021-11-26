@@ -42,12 +42,15 @@ export class Node {
     public visited: boolean;
     public distance: number;
     public type: string;
-    public enterCost:object;
+    public inDegree:number;
+    public outDegree:number;
     constructor(id: number, parentElement: HTMLElement) {
         //this.element = document.createElement("span");
         //this.element.id = id.toString();
         //this.element.textContent = id.toString();
         this.adjList = [];
+        this.inDegree = 0;
+        this.outDegree = 0;
         this.id = id;
         this.wall = false;
         this.visited = false;
@@ -69,14 +72,15 @@ export class Graph {
     id_node: Node[]; //means gives and id, returns node;
     running : boolean;
     weighted: boolean;
-
+    directed: boolean;
     status : "wall"| "not-wall";
     private _clicked: number;
-    constructor(n: number = 0, type: string = "grid") {
+    constructor(n: number = 0, type: string = "grid", directed:boolean = false, weighted:boolean = false) {
         this.cleanBool = false;
         this.id_node = [];
         this.size = n;
-        this.weighted = false;
+        this.weighted = weighted;
+        this.directed = directed;
         this.type = type;
         this._clicked = null;
         this.running = false;
@@ -85,6 +89,8 @@ export class Graph {
         element.classList.add("graph");
         this.element = element;
         this.clean();
+
+
     }
 
     addNode(id: number): void {
@@ -92,14 +98,20 @@ export class Graph {
         this.size++;
     }
 
-    addEdge(nodeA: number, nodeB: number, undirected: boolean = true, w = 1) {
+    addEdge(nodeA: number, nodeB: number, w = 1) {
         //Adds a node to the graph;
         if(w != 1){
             this.weighted = true;
         }
         this.id_node[nodeA].adjList.push(new Edge(nodeB, w));
-        if (undirected) {
+
+        this.id_node[nodeA].outDegree++;
+        this.id_node[nodeB].inDegree++;
+        if (!this.directed) {
             this.id_node[nodeB].adjList.push(new Edge(nodeA, w));
+
+            this.id_node[nodeB].outDegree++;
+            this.id_node[nodeA].inDegree++;
         }
     }
 

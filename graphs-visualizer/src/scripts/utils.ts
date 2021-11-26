@@ -61,3 +61,41 @@ export function valid(x:number, y:number):boolean{
         return false;
     }
 }
+
+//might be buggy
+export function randomGraphGenerator(size:number, numberOfEdges:number, directed = true, weighted = false, maxNodeDegree = 5):Graph{
+    const graph = new Graph(0,"graph", directed, weighted);
+
+    for(let id=0; id<size;++id){
+        graph.addNode(id);
+        graph.id_node[id].element = createNode(id);
+        graph.id_node[id].element.setAttribute(
+            "ondragstart",
+            "return false;"
+        );
+        graph.id_node[id].element.draggable = false;
+        graph.element.appendChild(graph.id_node[id].element);
+
+    }
+    
+    let iterations = 10000;
+    for(let i =0; i<numberOfEdges && iterations > 0;++i){
+        iterations--;
+        const sId = random(0,size-1);
+        let tId = sId;
+        while(tId === sId){
+            tId = random(0,size-1);
+        }
+        if(graph.id_node[tId].inDegree >= maxNodeDegree || graph.id_node[sId].outDegree >= maxNodeDegree){
+            i--;
+            continue;
+        }else{
+            let w = 1;
+            if(weighted){
+                w = random(1,50);
+            }
+            graph.addEdge(sId, tId,w);
+        }   
+    }
+    return graph;
+}

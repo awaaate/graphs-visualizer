@@ -148,7 +148,6 @@ export function createGridGraph(graph: Graph, weighted: boolean = false) {
         [-1, 0],
         [0, -1],
     ];
-
     for (let X = 0; X < GRID_Y; ++X) {
         for (let Y = 0; Y < GRID_Y; ++Y) {
             const id: number = getId(X, Y);
@@ -157,9 +156,9 @@ export function createGridGraph(graph: Graph, weighted: boolean = false) {
                 const newId: number = getId(X + add[0], Y + add[1]);
                 if (weighted) {
                     const w = 1; //GENERATE RANDOM NUMBER;
-                    graph.addEdge(id, newId, true, w);
+                    graph.addEdge(id, newId);
                 } else {
-                    graph.addEdge(id, newId, true);
+                    graph.addEdge(id, newId);
                 }
             }
         }
