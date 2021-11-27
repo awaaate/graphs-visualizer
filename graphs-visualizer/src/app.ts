@@ -14,11 +14,15 @@ const targetInput = document.getElementById("targetInput") as HTMLInputElement;
 const bfsForm = document.getElementById("bfsForm");
 const BfsButton = document.getElementById("bfs-button");
 const DjikstraButton = document.getElementById("djiksta-button");
+const randomCostsButton = document.getElementById("random-costs-button");
 
 mazeGenButton.addEventListener("click", (event) =>{
     maze_generator(graph);
 });
 
+randomCostsButton.addEventListener("click", (event) =>{
+    graph.setRandomCosts(100);
+})
 bfsForm.addEventListener("submit", (e) => {
     e.preventDefault();
     if (graph.running) {

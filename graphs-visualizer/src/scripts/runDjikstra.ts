@@ -8,7 +8,7 @@ import { sleep } from "./utils";
 export async function runDjikstra(graph:Graph, sourceId:number, targetId:number){
     graph.clean();
     graph.running = true;
-    graph.setRandomCosts(100);
+    //graph.setRandomCosts(100);
     /*if(!graph.weighted){
         runBFS(graph, sourceId, targetId);
         return;
