@@ -44,7 +44,7 @@ export class Node {
     public type: string;
     public inDegree:number;
     public outDegree:number;
-    constructor(id: number, parentElement: HTMLElement) {
+    constructor(id: number) {
         //this.element = document.createElement("span");
         //this.element.id = id.toString();
         //this.element.textContent = id.toString();
@@ -94,7 +94,7 @@ export class Graph {
     }
 
     addNode(id: number): void {
-        this.id_node[id] = new Node(id, this.element);
+        this.id_node[id] = new Node(id);
         this.size++;
     }
 

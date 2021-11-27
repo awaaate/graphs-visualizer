@@ -1,7 +1,7 @@
 import { Graph } from "./graph_types";
 import { getId, random, valid } from "./utils";
 import { paintWall } from "./visualizer";
-import {GRID_X, GRID_Y, EXPANSION_SLEEP_TIME} from "./constants";
+import {GRID_X, GRID_Y, EXPANSION_SLEEP_TIME,MAZE_GEN_TIME} from "./constants";
 import {sleep } from "./utils";
 import { Stack } from "./datastructures"
 
@@ -33,23 +33,32 @@ function generate(x:number, y:number):number[][]{
 }
 
 
-async function delWall(graph:Graph, x:number, y:number){
-    graph.id_node[getId(x,y)].wall = false;
-    paintWall(graph.id_node[getId(x,y)]);
+function delWall(graph:Graph, x:number, y:number, alternative:boolean = false, color:string = "blue"){
+    if(!alternative)
+        graph.id_node[getId(x,y)].wall = false;
+    paintWall(graph.id_node[getId(x,y)], alternative, color);
 }
 
 
-async function dfs(graph:Graph, x:number, y:number){
+async function dfs(graph:Graph, x:number, y:number, cool:boolean = false){
     graph.id_node[getId(x,y)].visited = true;
-    sleep(EXPANSION_SLEEP_TIME);
-    delWall(graph, x, y);
+    if(!cool){
+        await sleep(MAZE_GEN_TIME);
+        delWall(graph, x, y, true,"blue");
+    }
     for(let add of generate(x,y)){
         if(!graph.id_node[getId(x + add[0],y + add[1])].visited){
-            sleep(EXPANSION_SLEEP_TIME);
+            if(!cool){
+                await sleep(MAZE_GEN_TIME);
+                delWall(graph, x + add[0]/2, y +add[1]/2,true, "blue");
+            }
+            await dfs(graph,x +add[0], y + add[1]);
+            await sleep(MAZE_GEN_TIME);
             delWall(graph, x + add[0]/2, y +add[1]/2);
-            dfs(graph,x +add[0], y + add[1]);
         }
     }
+    await sleep(MAZE_GEN_TIME);
+    delWall(graph, x, y);
 }
 
 
