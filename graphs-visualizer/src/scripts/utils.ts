@@ -64,7 +64,7 @@ export function valid(x:number, y:number):boolean{
 
 //might be buggy
 export function randomGraphGenerator(size:number, numberOfEdges:number, directed = true, weighted = false, maxNodeDegree = 5):Graph{
-    const graph = new Graph(0,"graph", directed, weighted);
+    const graph = new Graph("graph", directed, weighted);
 
     for(let id=0; id<size;++id){
         graph.addNode(id);

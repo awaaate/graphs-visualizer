@@ -66,7 +66,6 @@ export class Graph {
 
     */
     size: number;
-    cleanBool: boolean;
     type: string;
     element: HTMLElement;
     id_node: Node[]; //means gives and id, returns node;
@@ -75,12 +74,14 @@ export class Graph {
     directed: boolean;
     status : "wall"| "not-wall";
     private _clicked: number;
-    constructor(n: number = 0, type: string = "grid", directed:boolean = false, weighted:boolean = false) {
-        this.cleanBool = false;
+    
+    constructor(type: string = "grid", directed:boolean = false, weighted:boolean = false) {
         this.id_node = [];
-        this.size = n;
+
         this.weighted = weighted;
         this.directed = directed;
+
+        this.size = 0;
         this.type = type;
         this._clicked = null;
         this.running = false;
@@ -89,7 +90,6 @@ export class Graph {
         element.classList.add("graph");
         this.element = element;
         this.clean();
-
 
     }
 
@@ -100,9 +100,7 @@ export class Graph {
 
     addEdge(nodeA: number, nodeB: number, w = 1) {
         //Adds a node to the graph;
-        if(w != 1){
-            this.weighted = true;
-        }
+        if(this.weighted === false)w = 1;
         this.id_node[nodeA].adjList.push(new Edge(nodeB, w));
 
         this.id_node[nodeA].outDegree++;
@@ -126,17 +124,29 @@ export class Graph {
     }
 
     setRandomCosts(max:number):void{
-        this.weighted = true;
+        //if(this.weighted === false)return;
+        let maxSum = 0;
         for( let stringNodeIndex in this.id_node){
             const index = parseInt(stringNodeIndex);
-            for(let stringEdgeIndex in this.id_node[index]){
+            let average = 0;
+            if(this.id_node[index].wall)continue;
+            for(let stringEdgeIndex in this.id_node[index].adjList){
                 const edgeIndex = parseInt(stringEdgeIndex);
                 const number = random(1,max);
+                average += number;
                 this.id_node[index].adjList[edgeIndex].weight = number;
-                const quotient = number/max;
-                const maxColor = 240;//CHANGE;
-                const tonality = quotient * maxColor;
+                //const quotient = number/max;
+                //const maxColor = 240;//CHANGE;
+                //const tonality = quotient * maxColor;
                 //PAINT THE VERTEX IN THIS TONALITY;
+            }
+            maxSum = Math.max(maxSum,average);
+        }
+        console.log(maxSum);
+        for(let node of this.id_node){
+            for(let edge of node.adjList){
+                continue;
+                //set edges to the corresponding color;
             }
         }
         return;

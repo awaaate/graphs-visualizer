@@ -1,3 +1,10 @@
+export function random(min:number, max:number):number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export const INF: number = 8007199254740991; //normal intmax
+
+
 class QueueItem {
     value: number;
     nextItem: any;
@@ -304,3 +311,33 @@ export class DSU{
     }
 }
 
+
+/*
+PRIORITY QUEUE TESTER
+const q = new PriorityQueue();
+
+q.push(-1,26);
+q.push(-2,34);
+q.push(-6,62);
+q.push(-4, 1);
+for(let i=0; i<100;++i){
+    q.push(-random(1,500),random(1,10000));
+}
+
+let prev = 100;
+let exit = true;
+while(!q.empty()){
+    console.log(q.front());
+    if(prev < q.front()[0]){
+        exit = false;
+    }
+    prev = q.front()[0];
+    q.pop();
+
+}
+if(exit)
+console.log("EXIT");
+else    
+console.log("CACA");
+
+*/
