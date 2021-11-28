@@ -33,8 +33,10 @@ export async function runDjikstra(graph:Graph, sourceId:number, targetId:number)
         if(curr === targetId){
             break;
         }
+ 
         await sleep(EXPANSION_SLEEP_TIME/10);
-        printNode(graph.id_node[curr], "normal");
+        if(curr != sourceId || curr != targetId)
+            printNode(graph.id_node[curr], "normal");
         cost = Math.abs(cost);
         q.pop();
 
