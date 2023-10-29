@@ -1,0 +1,63 @@
+@keyframes NormalAnimation {
+  0% {
+    background-color: #064e3b;
+    border-radius: 75%;
+    transform: scale(.9);
+  }
+
+  25% {
+    background-color: #34d399;
+    border-radius: 50%;
+    transform: scale(.5);
+  }
+
+  50% {
+    background-color: #059669;
+    border-radius: 25%;
+    transform: scale(.7);
+  }
+
+  to {
+    background-color: #10b981;
+    border-radius: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes PathAnimation {
+  0% {
+    background-color: #f59e0b;
+    transform: scale(.5);
+  }
+
+  25% {
+    background-color: #fcd34d;
+    transform: scale(.7);
+  }
+
+  50% {
+    background-color: #fbbf24;
+    transform: scale(.9);
+  }
+
+  to {
+    background-color: #fde68a;
+    transform: scale(1);
+  }
+}
+
+.bg-normal {
+  animation-name: NormalAnimation;
+  animation-fill-mode: forwards;
+}
+
+.bg-normal, .bg-path {
+  animation-duration: 2s;
+}
+
+.bg-path {
+  animation-name: PathAnimation;
+  animation-fill-mode: forwards;
+}
+
+/*# sourceMappingURL=index.5409f38f.css.map */
