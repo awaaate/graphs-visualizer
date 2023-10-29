@@ -1,0 +1,53 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/index.5525e4b8.css">
+        <link rel="stylesheet" href="/index.5409f38f.css">
+        <title>Visualizer</title>
+    </head>
+    <body>
+        <div class="
+                bg-black
+                w-screen
+                h-screen
+                flex
+                items-center
+                justify-center
+                text-white
+            ">
+            <div id="app" class="rou"></div>
+            <form id="bfsForm" class="
+                    bg-gray-900
+                    rounded-md
+                    shadow-sm
+                    p-2
+                    grid grid-cols-1
+                    gap-4
+                    text-gray-700
+                    w-lg
+                    ml-4
+
+                " style="width: 750px">
+                <label for="target" class="text-white">Source</label>
+                <input type="number" name="source" id="sourceInput" placeholder="3" class="p-2 rounded-md">
+                <label for="target" class="text-white font-semibold">Target</label>
+                <input type="number" name="target" id="targetInput" placeholder="2" class="p-2 rounded-md">
+                <button type="submit" class="bg-blue-400 rounded-md text-white p-4" id="bfs-button">
+                    Run Bfs
+                </button>
+                <button type="submit" class="bg-blue-400 rounded-md text-white p-4" id="djiksta-button">
+                    Run Djikstra's
+                </button>
+            </form>
+            <button id="maze-gen-button" class="bg-blue-400 rounded-md text-white p-4">
+            Run maze generator
+            </button>
+            <button id="random-costs-button" class="bg-blue-400 rounded-md text-white p-4">
+            Set Random Costs
+            </button>
+        </div>
+        <script src="/index.6b815632.js" defer=""></script>
+    </body>
+</html>

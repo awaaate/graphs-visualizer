@@ -6132,7 +6132,7 @@
 83/workspaces/graphs-visualizer/graphs-visualizer/node_modules/lodash/fp/transform.js1698573710076727640 0
 82/workspaces/graphs-visualizer/graphs-visualizer/node_modules/@parcel/types/LICENSE1698573707792727534 0
 82/workspaces/graphs-visualizer/graphs-visualizer/node_modules/lodash/fp/defaults.js1698573709680727622 0
-58/workspaces/graphs-visualizer/graphs-visualizer/.gitignore1698573032944696250 0
+58/workspaces/graphs-visualizer/graphs-visualizer/.gitignore1698573867400734933 0
 92/workspaces/graphs-visualizer/graphs-visualizer/node_modules/@parcel/core/src/Environment.js1698573709260727602 0
 107/workspaces/graphs-visualizer/graphs-visualizer/node_modules/csso/node_modules/css-tree/dist/csstree.esm.js1698573709444727611 0
 81/workspaces/graphs-visualizer/graphs-visualizer/node_modules/lodash/fp/replace.js1698573709968727635 0
